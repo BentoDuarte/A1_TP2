@@ -15,8 +15,16 @@ def adicionarProduto():
     preco = request.form.get("preco")
     quantidade = request.form.get("quantidade")
 
-    produto = {"id": id,"nome": nome, "preco": preco, "quantidade":quantidade}
+    if id is None:
+        return "id vázio"
+    elif nome is None:
+        return "nome vázio"
+    elif preco is None:
+        return "preco vázio"
+    elif quantidade is None:
+        return "quantidade vázia"
 
+    produto = {"id": id,"nome": nome, "preco": preco, "quantidade":quantidade}
     produtos.append(produto)
 
     if produtos:
