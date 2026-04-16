@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+from werkzeug.utils import redirect
 
 app = Flask(__name__)
 
@@ -6,9 +7,13 @@ produtos = []
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.html", produtos = produtos)
 
-@app.route("/produtos/adicionar", method="POST")
+@app.route("/cadastro")
+def cadastro():
+    return render_template("cadastro.html")
+
+@app.route("/produtos/adicionar", methods=["POST"])
 def adicionarProduto():
     id = request.form.get("id")
     nome = request.form.get("nome")
@@ -27,16 +32,11 @@ def adicionarProduto():
     produto = {"id": id,"nome": nome, "preco": preco, "quantidade":quantidade}
     produtos.append(produto)
 
+    print(produtos)
+
     if produtos:
-        return "Produto Acionado"
+        return redirect("/")
     return"Falha ao adicionar produto"
-
-@app.route("/produtos/listar", method="GET")
-def listarProdutos():
-    if produtos:
-        return render_template("lista.html", produtos = produtos)
-
-    return"Nenhum produto encontrado"
 
 if __name__ == "__main__":
     app.run(debug=True)
